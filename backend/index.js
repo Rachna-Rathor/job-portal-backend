@@ -4,10 +4,13 @@ require("dotenv").config();
 app.use(express.json());
 const connectDB=require("./config/db")
 const authrouter=require("./routes/auth.route")
+const aiRoutes=require("./routes/ai.routes")
+console.log("AI ROUTES:", aiRoutes)
 // app.use("/",(req,res)=>{
 //     res.send("app is running");
 // })
 app.use("/api",authrouter)
+app.use("/api/ai",aiRoutes)
 
 app.listen(4000,()=>{
     console.log("app listen on 4000 port")
