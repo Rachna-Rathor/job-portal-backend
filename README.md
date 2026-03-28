@@ -1,4 +1,4 @@
-# Job Portal Backend API
+# Job Portal Backend
 
 This is the **backend of a Job Portal Application** built using **Node.js**, **Express**, and **MongoDB**.  
 It provides secure REST APIs for user authentication, job postings, applications, and AI-powered features to enhance recruitment efficiency.
@@ -7,45 +7,24 @@ This project is designed to make the hiring process smarter, faster, and more ac
 
 ---
 
-## 🚀 Key Highlights
-- Clean REST API design
-- JWT-based secure authentication
-- Role-based access control (RBAC)
-- Real-world job application workflow
-- Modular and maintainable project structure
+## 🔑 Features
 
----
+### Core Features
+- ✅ **User Authentication**
+  - Users can register and login using email/password.
+  - Passwords are securely hashed with bcrypt.
+- ✅ **Role-Based Access Control**
+  - Separate endpoints for **job seekers** and **recruiters**.
+- ✅ **Job Management**
+  - Recruiters can post, update, and delete job listings.
+  - View job listings with filters such as location, skills, or company.
+- ✅ **Application Management**
+  - Job seekers can apply to jobs and track application status.
+  - Recruiters can view applicants for their jobs.
+- ✅ **Resume Upload**
+  - Users can upload resumes in PDF format.
+  - Resumes are stored securely and used for AI analysis.
 
-## 🔐 Authentication & Authorization
-- User Signup & Login using JWT
-- Secure protected routes
-- Middleware-based role verification
-- Candidates and Recruiters have strictly separated permissions
-
----
-
-## 👩‍💻 Candidate Functionalities
-- Apply for job postings
-- View all applied jobs
-- Withdraw job applications
-- Duplicate job applications are prevented at API level
-- Application status maintained per job
-
----
-### Additional Features
-- 📄 **Search & Filters**
-  - Search jobs by **title, skills, location, or company**.
-- 📊 **Analytics**
-  - Track application submissions and candidate engagement metrics.
----
-
-## 🧑‍💼 Recruiter Functionalities
-- Create, update, and delete job postings
-- View all jobs created by the recruiter
-- View applicants for a specific job
-- Recruiters can access **only their own jobs and applicants**
-
----
 ### AI-Powered Features
 - 🤖 **Resume Analyzer**
   - Parses resumes to extract **skills**, **experience**, **education**, and other relevant information.
@@ -60,26 +39,29 @@ This project is designed to make the hiring process smarter, faster, and more ac
   - Suggests additional skills a candidate may add to improve job match scores.
   - Helps candidates optimize their profiles for better opportunities.
 
----
-
-## 🗂 Data Modeling (Core Logic)
-- Jobs maintain an `applicants` array
-- Each applicant contains:
-  - Candidate reference
-  - Application status (`applied`)
-- Designed to easily support future features like:
-  - Shortlisting
-  - Rejection
-  - Application tracking
+### Additional Features
+- 📄 **Search & Filters**
+  - Search jobs by **title, skills, location, or company**.
+- 📊 **Analytics**
+  - Track application submissions and candidate engagement metrics.
+- 🔒 **Security**
+  - JWT authentication for secure routes.
+  - Role-based access control ensures only authorized users can perform certain actions.
 
 ---
 
-## 🛠 Tech Stack
-- **Node.js**
-- **Express.js**
-- **MongoDB**
-- **Mongoose**
-- **JWT (JSON Web Tokens)**
+## ⚡ Tech Stack
+
+- **Backend:** Node.js, Express  
+- **Database:** MongoDB, Mongoose  
+- **AI & NLP:** OpenAI API or custom AI module for resume parsing & job matching  
+- **Authentication:** JWT, bcrypt  
 
 ---
 
+## 🛠 Installation
+
+1. Clone the repository:
+```bash
+git clone <your-repo-url>
+cd job-portal-backend
