@@ -57,32 +57,32 @@ This platform enables recruiters to manage job postings and candidates to apply,
 - REST APIs
 
 ---
-
 ## 📁 Project Structure
 
-
+```
 job-portal-backend/
 │
 ├── controllers/
-│ ├── auth.controller.js
-│ ├── recruiter.controller.js
-│ ├── candidate.controller.js
-│ ├── resume.controller.js
-│ └── ai.controller.js
+│   ├── auth.controller.js
+│   ├── recruiter.controller.js
+│   ├── candidate.controller.js
+│   ├── resume.controller.js
+│   └── ai.controller.js
 │
 ├── middleware/
-│ ├── auth.middleware.js
-│ ├── role.middleware.js
-│ ├── candidate.middleware.js
-│ └── resume.upload.js
+│   ├── auth.middleware.js
+│   ├── role.middleware.js
+│   ├── candidate.middleware.js
+│   └── resume.upload.js
 │
 ├── routes/
-│ ├── job.routes.js
-│ ├── resume.routes.js
-│ └── ai.routes.js
+│   ├── job.routes.js
+│   ├── resume.routes.js
+│   └── ai.routes.js
 │
 ├── models/
-│ └── job.model.js
+│   ├── job.model.js
+│   └── user.model.js
 │
 ├── index.js
 ├── package.json
