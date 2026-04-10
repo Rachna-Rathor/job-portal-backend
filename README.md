@@ -59,7 +59,9 @@ This platform enables recruiters to manage job postings and candidates to apply,
 ---
 
 ## 📁 Project Structure
-project/
+
+
+job-portal-backend/
 │
 ├── controllers/
 │ ├── auth.controller.js
@@ -81,9 +83,10 @@ project/
 │
 ├── models/
 │ └── job.model.js
-│     user.model.js
+│
 ├── index.js
-└── package.json
+├── package.json
+└── .env
 
 
 ---
