@@ -77,18 +77,26 @@ const deleteJob = async (req, res) => {
 }
 const viewAllJobs = async (req, res) => {
     try {
-        const jobs = await Job.find()
-            .populate("recruiter", "name email");
-
-        res.status(200).json({
-            success: true,
-            totalJobs: jobs.length,
-            jobs
-        });
+        const {title,location,salary,page=1,limit=10,type}=req.query;
+        const makingQuery={};
+        if(title){
+            makingQuery.title=title
+        }
+        if(location){
+            makingQuery.location=location
+        }
+        if(salary){
+            makingQuery.salary=salary
+        }
+        if(type){
+            makingQuery.type=type;
+        }
+        const pageNumber=Number(page);
+        const limitNumber=Number(limit);
+        const skip=(pageNumber-1)*limitNumber
+        const jobs= await Job.find(query).skip(skip).limitNumber(limitNumber).sort({createdAt:-1});
     } catch (error) {
-        res.status(500).json({
-            message: error.message
-        });
+        
     }
 };
 
