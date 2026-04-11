@@ -9,6 +9,9 @@ const aiResumeAnalysis=require("./routes/resume.routes")
 // app.use("/",(req,res)=>{
 //     res.send("app is running");
 // })
+const cors = require("cors");
+
+app.use(cors());
 app.use("/api",authrouter)
 app.use("/api/ai",aiRoutes)
 app.use("/api/ai",aiResumeAnalysis)
