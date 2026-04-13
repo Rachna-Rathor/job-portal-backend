@@ -20,7 +20,7 @@ const Login = () => {
 
       alert("Login Successful 🚀");
 
-      navigate("/dashboard");
+      navigate("/");
 
     } catch (err) {
       alert(err.response?.data?.message || "Login Failed");

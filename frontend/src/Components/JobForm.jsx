@@ -1,6 +1,6 @@
 import { useState } from "react";
 import API from "../api/axios";
-
+import { useNavigate } from "react-router-dom";
 const JobForm = () => {
   const [form, setForm] = useState({
     title: "",
@@ -10,7 +10,7 @@ const JobForm = () => {
     experience: "",
     company: ""
   });
-
+const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,12 +27,13 @@ const JobForm = () => {
         experience: "",
         company: ""
       });
+      navigate('/')
 
     } catch (err) {
       alert(err.response?.data?.message || "Error creating job");
     }
   };
-
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
 

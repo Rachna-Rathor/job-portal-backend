@@ -110,22 +110,41 @@ const viewAllJobs = async (req, res) => {
 
 const getJobApplicants = async (req, res) => {
     try {
-        const job = await Job.findOne({ _id: req.params.jobId, recruiter: req.user.id })
-            .populate("applicants.candidate", "name email"); // ✅ populate properly
+
+
+        const job = await Job.findById(
+             req.params.jobId
+
+        )
+            .populate("applicants.candidate", "name email");
+            console.log(req.user)
+             console.log(job)
+
 
         if (!job) {
-            return res.status(404).json({ success: false, message: "Job not found" });
+            return res.status(404).json({
+                success: false,
+                message: "Job not found "
+            });
+        }
+        if (job.recruiter.toString() !== req.user.id.toString()) {
+            return res.status(403).json({ message: "Not authorized" });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             jobTitle: job.title,
             applicants: job.applicants
         });
+
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        console.log(error.message)
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 const updatejobStatus = async (req, res) => {
     try {
@@ -141,9 +160,9 @@ const updatejobStatus = async (req, res) => {
         console.log("applicants array:", job.applicants);
         const candidate = job.applicants.find((app) => {
             console.log("DB candidate:", app.candidate.toString());
-           return app.candidate.toString() ===candidateId
+            return app.candidate.toString() === candidateId
         })
-        
+
         if (!candidate) {
             return res.status(404).json({
                 message: "candidate not found"
