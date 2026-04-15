@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const JobList = ({ setSelectedJob, setView }) => {
   const [jobs, setJobs] = useState([]);
@@ -7,7 +8,7 @@ const JobList = ({ setSelectedJob, setView }) => {
   useEffect(() => {
     fetchJobs();
   }, []);
-
+const navigate=useNavigate()
   const fetchJobs = async () => {
     const res = await API.get("/api/viewallJobs");
     setJobs(res.data.jobs);
@@ -22,22 +23,48 @@ const JobList = ({ setSelectedJob, setView }) => {
     <div>
       <h2 className="text-2xl font-bold mb-6">All Jobs</h2>
 
-      <div className="grid grid-cols-2 gap-6">
+      {/* Grid */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
         {jobs.map((job) => (
           <div
             key={job._id}
-            className="bg-white p-5 rounded-xl shadow hover:shadow-lg transition"
+            className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300 border border-gray-100"
           >
-            <h3 className="text-lg font-semibold">{job.title}</h3>
-            <p className="text-gray-500">{job.location}</p>
+            {/* Title + Company */}
+            <div className="mb-3">
+              <h3 className="text-xl font-bold text-gray-800">
+                {job.title}
+              </h3>
+              <p className="text-sm text-gray-500">
+                {job.company}
+              </p>
+            </div>
 
-            <p className="text-green-600 font-bold mt-2">
-              ₹ {job.salary}
+            {/* Location */}
+            <p className="text-gray-500 text-sm mb-2">
+              📍 {job.location}
             </p>
 
-            <div className="mt-4 flex gap-3">
+            {/* Salary + Experience */}
+            <div className="flex justify-between items-center mb-3">
+              <p className="text-green-600 font-semibold">
+                ₹ {job.salary}
+              </p>
+              <p className="text-blue-500 text-sm">
+                {job.experience} yrs exp
+              </p>
+            </div>
+
+            {/* Description */}
+            <p className="text-gray-600 text-sm line-clamp-2">
+              {job.description}
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-5 flex gap-3">
               <button
-                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
                 onClick={() => {
                   setSelectedJob(job._id);
                   setView("applicants");
@@ -47,15 +74,29 @@ const JobList = ({ setSelectedJob, setView }) => {
               </button>
 
               <button
-                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                className="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition"
                 onClick={() => deleteJob(job._id)}
               >
                 Delete
               </button>
+              <button
+                className="flex-1 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition"
+                onClick={() => navigate(`/edit-job/${jobs._id}`)}
+              >
+                Edit
+              </button>
             </div>
           </div>
         ))}
+
       </div>
+
+      {/* Empty State */}
+      {jobs.length === 0 && (
+        <p className="text-center text-gray-500 mt-10">
+          No jobs available
+        </p>
+      )}
     </div>
   );
 };

@@ -4,23 +4,24 @@ import { useNavigate } from "react-router-dom";
 
 const Applicants = ({ jobId }) => {
   const [applicants, setApplicants] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
   console.log(jobId)
 
   useEffect(() => {
     fetchApplicants();
   }, []);
-   
+
   const fetchApplicants = async () => {
-      try {
-    const res = await API.get(`/api/job/${jobId}/applicants`);
-    setApplicants(res.data.applicants);
-  } catch (error) {
-    if (error.response?.status === 403) {
-      setErrorMsg("You cannot view applicants because you did not create this job");
-    } else {
-      setErrorMsg("Something went wrong");
+    try {
+      const res = await API.get(`/api/job/${jobId}/applicants`);
+      setApplicants(res.data.applicants);
+    } catch (error) {
+      if (error.response?.status === 403) {
+        setErrorMsg("You cannot view applicants because you did not create this job");
+      } else {
+        setErrorMsg("Something went wrong");
+      }
     }
-  }
   };
 
   const updateStatus = async (candidateId, status) => {
@@ -28,35 +29,44 @@ const Applicants = ({ jobId }) => {
     fetchApplicants();
   };
   console.log(localStorage.getItem("token"));
-  
+
 
   return (
-    <div>
-      {errorMsg && (
-  <p className="text-red-500 mb-4">{errorMsg}</p>
-)}
-      <h2 className="text-2xl font-bold mb-6">Applicants</h2>
+  <div>
+    {errorMsg && (
+      <p className="text-red-500 mb-4">{errorMsg}</p>
+    )}
 
-      {applicants.map((app) => (
-        <div
-          key={app._id}
-          className="bg-white p-4 mb-4 rounded-xl shadow flex justify-between items-center"
+    <h2 className="text-2xl font-bold mb-2">Applicants</h2>
+
+    <p className="mb-4 text-gray-600">
+      Total Applicants: {applicants.length}
+    </p>
+
+    {applicants.length === 0 && !errorMsg && (
+      <p>No applicants yet</p>
+    )}
+
+    {applicants.map((app) => (
+      <div
+        key={app._id}
+        className="bg-white p-4 mb-4 rounded-xl shadow flex justify-between items-center"
+      >
+        <p className="font-semibold">{app.candidate.name}</p>
+
+        <select
+          className="border p-2 rounded"
+          value={app.status}
+          onChange={(e) => updateStatus(app.candidate._id, e.target.value)}
         >
-          <p className="font-semibold">{app.candidate.name}</p>
-
-          <select
-            className="border p-2 rounded"
-            value={app.status}
-            onChange={(e)=>updateStatus(app.candidate._id, e.target.value)}
-          >
-            <option value="applied">Applied</option>
-            <option value="shortlisted">Shortlisted</option>
-            <option value="rejected">Rejected</option>
-          </select>
-        </div>
-      ))}
-    </div>
-  );
+          <option value="applied">Applied</option>
+          <option value="shortlisted">Shortlisted</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+    ))}
+  </div>
+);
 };
 
 export default Applicants;
