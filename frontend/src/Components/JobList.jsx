@@ -80,8 +80,9 @@ const navigate=useNavigate()
                 Delete
               </button>
               <button
+               onClick={() => navigate(`/edit-job/${job._id}`)}
                 className="flex-1 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition"
-                onClick={() => navigate(`/edit-job/${jobs._id}`)}
+               
               >
                 Edit
               </button>

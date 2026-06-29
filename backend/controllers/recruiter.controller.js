@@ -1,5 +1,6 @@
 const Job = require("../models/job.models")
-
+const User = require("../models/user.models") 
+const sendEmail = require("../utils/sendEmail")
 
 const createJob = async (req, res) => {
     try {
@@ -51,6 +52,7 @@ const updateJob = async (req, res) => {
             job: updatedJob
         });
     } catch (error) {
+        console.log(error.message)
         res.status(500).json({ message: error.message });
     }
 }
@@ -156,10 +158,7 @@ const updatejobStatus = async (req, res) => {
                 message: "job not found"
             })
         }
-        console.log("candidateId from params:", candidateId);
-        console.log("applicants array:", job.applicants);
         const candidate = job.applicants.find((app) => {
-            console.log("DB candidate:", app.candidate.toString());
             return app.candidate.toString() === candidateId
         })
 
@@ -170,6 +169,21 @@ const updatejobStatus = async (req, res) => {
         }
         candidate.status = status;
         await job.save()
+
+        // Notify candidate via email - failure shouldn't break the status update
+        try {
+            const candidateUser = await User.findById(candidateId);
+            if (candidateUser && candidateUser.email) {
+                await sendEmail(
+                    candidateUser.email,
+                    "Application Status Updated",
+                    `Hi ${candidateUser.name}, your application for "${job.title}" has been updated to: ${status}.`
+                );
+            }
+        } catch (emailErr) {
+            console.error("Email notification failed:", emailErr.message);
+        }
+
         res.status(200).json({
             message: "Status updated successfully"
         })

@@ -14,8 +14,6 @@ router.put("/updateJob/:id",authMiddleware,roleMiddleware,updateJob)
 router.delete("/deleteJob/:id",authMiddleware,roleMiddleware,deleteJob)
 router.get("/viewallJobs",authMiddleware,viewAllJobs)
 
-
-
 // candidate can only apply for jobs not recruiter
 router.post("/apply/:jobId",authMiddleware,candidateOnly,applyJobs) 
 router.get("/appliedjobs",authMiddleware,candidateOnly,getAppliedJobs)

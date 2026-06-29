@@ -46,6 +46,7 @@ const EditJob = () => {
     e.preventDefault();
     try {
       await API.put(`/api/updateJob/${id}`, jobData);
+      console.log(id)
       alert("Job updated successfully ✅");
       navigate("/");
     } catch (error) {

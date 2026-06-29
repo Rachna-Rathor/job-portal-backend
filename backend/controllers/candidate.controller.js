@@ -1,14 +1,16 @@
 const Job = require("../models/job.models")
+const mongoose = require("mongoose");
+const User = require("../models/user.models") 
+const sendEmail = require("../utils/sendEmail")
 
 const applyJobs = async (req, res) => {
  try {
-    const job = await Job.findById(req.params.jobId);
+    const job = await Job.findById(req.params.jobId).populate("recruiter");
 
     if (!job) {
       return res.status(404).json({ success: false, message: "Job not found" });
     }
 
-    // Check duplicate apply
     const alreadyApplied = job.applicants.some(
       (app) => app.candidate && app.candidate.toString() === req.user.id.toString()
     );
@@ -17,15 +19,27 @@ const applyJobs = async (req, res) => {
     }
 
     job.applicants.push({ candidate: req.user.id });
-
     await job.save();
+
+    // Notify recruiter - failure here should not break the main response
+    try {
+      const candidate = await User.findById(req.user.id);
+      if (job.recruiter && job.recruiter.email) {
+        await sendEmail(
+          job.recruiter.email,
+          "New Job Application Received",
+          `${candidate.name} has applied for your job posting: ${job.title}.`
+        );
+      }
+    } catch (emailErr) {
+      console.error("Email notification failed:", emailErr.message);
+    }
 
     res.status(200).json({ success: true, message: "Applied successfully" });
     } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 }
-const mongoose = require("mongoose");
 
 const getAppliedJobs = async (req, res) => {
   try {
